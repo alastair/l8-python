@@ -1,5 +1,6 @@
 import struct
 import serial
+import bluetooth #pybluez!
 
 HEADER_MSB = 0xAA
 HEADER_LSB = 0x55
@@ -120,10 +121,19 @@ class L8(object):
 
 class L8Bt(L8):
     def __init__(self, address):
-        pass
+        self.BT_socket = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+        port = 1
+        try:
+            self.BT_socket.connect((address, port))
+        except:
+            print("ERROR: Could not connect")
+            self.BT_socket.close()
+            return -1
+        
+        self.BT_socket.settimeout(0.0) # Non blocking
 
     def write(self, data):
-        pass
+        self.BT_socket.send(data)
 
 class L8Serial(L8):
     def __init__(self, device):
