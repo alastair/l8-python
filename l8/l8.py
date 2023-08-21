@@ -28,7 +28,7 @@ crcTable = [0, 7, 14, 9, 28, 27, 18, 21, 56, 63, 54, 49, 36, 35, 42, 45, 112,
 def docrc(block):
     crc = 0
     for i in block:
-       b = struct.unpack("B", i)[0]
+       b = struct.unpack("B", struct.pack("B", i))[0]
        crc = crcTable[crc ^ (b & 0xFF)];
     return crc;
 
